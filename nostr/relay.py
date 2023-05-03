@@ -34,7 +34,7 @@ class RelayProxyConnectionConfig:
 class Relay:
     url: str
     message_pool: MessagePool
-    policy: RelayPolicy = RelayPolicy()
+    policy: RelayPolicy = None
     ssl_options: Optional[dict] = None
     proxy_config: RelayProxyConnectionConfig = None
 
@@ -47,6 +47,7 @@ class Relay:
         self.error_counter: int = 0
         self.error_threshold: int = 0
         self.lock: Lock = Lock()
+        self.policy = RelayPolicy() if self.policy is None else self.policy
         self.ws: WebSocketApp = WebSocketApp(
             self.url,
             on_open=self._on_open,
